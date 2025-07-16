@@ -7,12 +7,13 @@ import (
 
 func CreateTables(db *sql.DB) {
 	createChatMessagesTable := `
-        CREATE VIRTUAL TABLE IF NOT EXISTS chat_messages USING fts5(
-            username,
-            user_id,
-            channel,
-            content,
-            timestamp
+        CREATE TABLE IF NOT EXISTS chat_messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT,
+            user_id TEXT,
+            channel TEXT,
+            content TEXT,
+            timestamp TEXT
         );`
 
 	createUserIdMapTable := `
