@@ -256,7 +256,13 @@ func (m ChatModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.viewport.Height = m.height - 7
 			m.WrapMessages()
 		case tea.KeyEsc:
-			m.WsClient.Conn.Close()
+			// Safe WebSocket connection cleanup
+			if m.WsClient != nil {
+				log.Println("Closing WebSocket connection (Escape key)...")
+				m.WsClient.SafeClose()
+			} else {
+				log.Println("No WebSocket client to close")
+			}
 			return ChangeView(m, ChannelInputState)
 		case tea.KeyTab:
 			input := m.textinput.Value()
