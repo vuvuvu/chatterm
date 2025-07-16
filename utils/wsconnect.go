@@ -42,6 +42,20 @@ func (client *WebSocketClient) SendMessage(message []byte) error {
 	return client.Conn.WriteMessage(websocket.TextMessage, message)
 }
 
+// SafeClose safely closes the WebSocket connection with proper error handling and logging
+func (client *WebSocketClient) SafeClose() {
+	if client != nil && client.Conn != nil {
+		log.Println("Closing WebSocket connection...")
+		if err := client.Conn.Close(); err != nil {
+			log.Printf("Error closing WebSocket connection: %v", err)
+		} else {
+			log.Println("WebSocket connection closed successfully")
+		}
+	} else {
+		log.Println("No WebSocket connection to close")
+	}
+}
+
 // EstablishWSConnection sends the authentication information to Twitch,
 // then listens for and processes incoming IRC messages
 func EstablishWSConnection(
